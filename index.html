@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow — Modern To-Do App</title>
+  <meta name="description" content="TaskFlow: A beautiful, feature-rich to-do app with categories, priorities, due dates, drag & drop, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Ambient background particles -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="app-wrapper">
+
+    <!-- ── HEADER ── -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo">
+          <span class="logo-icon">⚡</span>
+          <span class="logo-text">TaskFlow</span>
+        </div>
+        <p class="tagline">Get things done, beautifully.</p>
+      </div>
+      <div class="header-right">
+        <button id="themeToggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button id="clearAllBtn" class="icon-btn danger-btn" title="Clear all tasks" aria-label="Clear all tasks">🗑️</button>
+      </div>
+    </header>
+
+    <!-- ── DASHBOARD ── -->
+    <section class="dashboard" aria-label="Task statistics">
+      <div class="stat-card" id="statTotal">
+        <span class="stat-number" id="totalCount">0</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat-card active" id="statPending">
+        <span class="stat-number" id="pendingCount">0</span>
+        <span class="stat-label">Pending</span>
+      </div>
+      <div class="stat-card" id="statDone">
+        <span class="stat-number" id="doneCount">0</span>
+        <span class="stat-label">Done</span>
+      </div>
+      <div class="stat-card overdue" id="statOverdue">
+        <span class="stat-number" id="overdueCount">0</span>
+        <span class="stat-label">Overdue</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-label" id="progressLabel">0% complete</span>
+      </div>
+    </section>
+
+    <!-- ── MOTIVATION ── -->
+    <section class="motivation-box glass-card" aria-label="Daily Inspiration">
+      <p id="quoteText">"The way to get started is to quit talking and begin doing."</p>
+      <span id="quoteAuthor">— Walt Disney</span>
+    </section>
+
+    <!-- ── ADD TASK PANEL ── -->
+    <section class="add-panel glass-card" aria-label="Add new task">
+      <div class="add-panel-title">
+        <span>✨ New Task</span>
+        <button id="toggleFormBtn" class="icon-btn small" aria-label="Collapse form">▲</button>
+      </div>
+      <div id="addForm" class="add-form">
+        <div class="form-row">
+          <input
+            id="taskInput"
+            type="text"
+            placeholder="What needs to be done?"
+            autocomplete="off"
+            aria-label="Task title"
+            maxlength="120"
+          />
+          <button id="addBtn" class="btn btn-primary" aria-label="Add task">
+            <span>Add Task</span>
+            <span class="btn-icon">+</span>
+          </button>
+        </div>
+        <div class="form-row meta-row">
+          <div class="meta-field">
+            <label for="taskCategory">📂 Category</label>
+            <select id="taskCategory" aria-label="Task category">
+              <option value="personal">🏠 Personal</option>
+              <option value="work">💼 Work</option>
+              <option value="health">💪 Health</option>
+              <option value="shopping">🛒 Shopping</option>
+              <option value="learning">📚 Learning</option>
+              <option value="other">🎯 Other</option>
+            </select>
+          </div>
+          <div class="meta-field">
+            <label for="taskPriority">🚦 Priority</label>
+            <select id="taskPriority" aria-label="Task priority">
+              <option value="medium">🟡 Medium</option>
+              <option value="high">🔴 High</option>
+              <option value="low">🟢 Low</option>
+            </select>
+          </div>
+          <div class="meta-field">
+            <label for="taskDue">📅 Due Date</label>
+            <input type="date" id="taskDue" aria-label="Task due date" />
+          </div>
+        </div>
+        <div class="form-row">
+          <input
+            id="taskNote"
+            type="text"
+            placeholder="Add a note (optional)..."
+            aria-label="Task note"
+            maxlength="200"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FILTERS & SEARCH ── -->
+    <section class="controls" aria-label="Filter and search tasks">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input id="searchInput" type="search" placeholder="Search tasks..." aria-label="Search tasks" />
+      </div>
+      <div class="filter-tabs" role="tablist" aria-label="Filter tasks by status">
+        <button class="tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button class="tab" data-filter="pending" role="tab" aria-selected="false">Pending</button>
+        <button class="tab" data-filter="done" role="tab" aria-selected="false">Done</button>
+        <button class="tab" data-filter="overdue" role="tab" aria-selected="false">Overdue</button>
+      </div>
+      <div class="sort-wrap">
+        <label for="sortSelect" class="sr-only">Sort by</label>
+        <select id="sortSelect" aria-label="Sort tasks">
+          <option value="created">📋 Date Added</option>
+          <option value="due">📅 Due Date</option>
+          <option value="priority">🚦 Priority</option>
+          <option value="alpha">🔤 A–Z</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- ── CATEGORY CHIPS ── -->
+    <div class="category-chips" id="categoryChips" role="group" aria-label="Filter by category">
+      <button class="chip active" data-cat="all">All</button>
+      <button class="chip" data-cat="personal">🏠 Personal</button>
+      <button class="chip" data-cat="work">💼 Work</button>
+      <button class="chip" data-cat="health">💪 Health</button>
+      <button class="chip" data-cat="shopping">🛒 Shopping</button>
+      <button class="chip" data-cat="learning">📚 Learning</button>
+      <button class="chip" data-cat="other">🎯 Other</button>
+    </div>
+
+    <!-- ── TASK LIST ── -->
+    <main id="taskListWrapper" aria-label="Task list">
+      <ul id="taskList" role="list"></ul>
+      <div id="emptyState" class="empty-state hidden">
+        <div class="empty-icon">🎯</div>
+        <p class="empty-title">All clear!</p>
+        <p class="empty-sub">Add a task above to get started.</p>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ── TOAST ── -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ── CONFIRM MODAL ── -->
+  <div id="modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box glass-card">
+      <p id="modalTitle" class="modal-title">Are you sure?</p>
+      <p id="modalMsg" class="modal-msg"></p>
+      <div class="modal-actions">
+        <button id="modalCancel" class="btn btn-ghost">Cancel</button>
+        <button id="modalConfirm" class="btn btn-danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
